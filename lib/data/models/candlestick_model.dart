@@ -11,19 +11,19 @@ class CandleStickModel {
 
   factory CandleStickModel.fromMap(Map<String, dynamic> json) =>
       CandleStickModel(
-        open: json["open"],
-        high: json["high"],
-        low: json["low"],
-        close: json["close"],
-        volume: json["volume"],
+        open: double.parse(json["open"]),
+        high: double.parse(json["high"]),
+        low: double.parse(json["low"]),
+        close: double.parse(json["close"]),
+        volume: double.parse(json["volume"]),
       );
 
   factory CandleStickModel.fromJson(String data) =>
       CandleStickModel.fromMap(json.decode(data));
 
-  final String open;
-  final String high;
-  final String low;
-  final String close;
-  final String volume;
+  final double open;
+  final double high;
+  final double low;
+  final double close;
+  final double volume;
 }
