@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_financial_chart/data/models/candlestick_model.dart';
-import 'package:flutter_financial_chart/presentation/widgets/line_chart/line_chart_model.dart';
+import 'package:flutter_financial_chart/presentation/widgets/line_chart/line_model.dart';
 
 class LineChartPainter extends CustomPainter {
   LineChartPainter({
@@ -15,7 +15,7 @@ class LineChartPainter extends CustomPainter {
         _lossPaint = lossPaint ?? Paint()
           ..color = Colors.red.withOpacity(0.5);
 
-  final Map<String, CandleStickModel>? timeSeries;
+  final List<CandleStickModel>? timeSeries;
   final Paint _gainPaint;
   final Paint _lossPaint;
 
@@ -25,9 +25,9 @@ class LineChartPainter extends CustomPainter {
       return;
     }
 
-    final List<LineChartModel> bars = _generateBars(size);
+    final List<LineModel> bars = _generateBars(size);
 
-    for (final LineChartModel bar in bars) {
+    for (final LineModel bar in bars) {
       canvas.drawRect(
         Rect.fromLTWH(
           bar.centerX - (bar.width / 2),
@@ -40,23 +40,21 @@ class LineChartPainter extends CustomPainter {
     }
   }
 
-  List<LineChartModel> _generateBars(Size size) {
-    final double pixelPerWidth = size.width / (timeSeries!.keys.length + 1);
-    final double pixelPerHigh = size.height /
-        timeSeries!.values.map((item) => item.volume).reduce(math.max);
+  List<LineModel> _generateBars(Size size) {
+    final double pixelPerWidth = size.width / (timeSeries!.length + 1);
+    final double pixelPerHigh =
+        size.height / timeSeries!.map((item) => item.volume).reduce(math.max);
 
-    List<LineChartModel> bars = [];
+    List<LineModel> bars = [];
 
-    for (int i = 0; i < timeSeries!.entries.length; i++) {
-      final MapEntry<String, CandleStickModel> currentElement =
-          timeSeries!.entries.elementAt(i);
-      final bool isGain = currentElement.value.open <
-          timeSeries!.entries.elementAt(i).value.close;
+    for (int i = 0; i < timeSeries!.length; i++) {
+      final CandleStickModel currentElement = timeSeries![i];
+      final bool isGain = currentElement.open < currentElement.close;
 
       bars.add(
-        LineChartModel(
+        LineModel(
           width: 3,
-          height: currentElement.value.volume * pixelPerHigh,
+          height: currentElement.volume * pixelPerHigh,
           centerX: (i + 1) * pixelPerWidth,
           paint: isGain ? _gainPaint : _lossPaint,
         ),

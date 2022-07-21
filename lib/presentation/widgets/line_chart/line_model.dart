@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LineChartModel {
-  LineChartModel({
+class LineModel {
+  LineModel({
     required this.width,
     required this.height,
     required this.centerX,

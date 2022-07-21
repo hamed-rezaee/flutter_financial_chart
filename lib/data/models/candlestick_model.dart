@@ -2,6 +2,7 @@ import 'dart:convert';
 
 class CandleStickModel {
   CandleStickModel({
+    required this.time,
     required this.open,
     required this.high,
     required this.low,
@@ -9,8 +10,9 @@ class CandleStickModel {
     required this.volume,
   });
 
-  factory CandleStickModel.fromMap(Map<String, dynamic> json) =>
+  factory CandleStickModel.fromMap(DateTime time, Map<String, dynamic> json) =>
       CandleStickModel(
+        time: time,
         open: double.parse(json["open"]),
         high: double.parse(json["high"]),
         low: double.parse(json["low"]),
@@ -18,9 +20,10 @@ class CandleStickModel {
         volume: double.parse(json["volume"]),
       );
 
-  factory CandleStickModel.fromJson(String data) =>
-      CandleStickModel.fromMap(json.decode(data));
+  factory CandleStickModel.fromJson(DateTime time, String data) =>
+      CandleStickModel.fromMap(time, json.decode(data));
 
+  final DateTime time;
   final double open;
   final double high;
   final double low;

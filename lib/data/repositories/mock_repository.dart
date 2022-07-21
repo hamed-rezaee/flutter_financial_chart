@@ -8,10 +8,20 @@ class MockRepository implements BaseRepository {
   Future<TimeSeriesModel> fetchTimeSeries({
     String symbol = 'IBM',
     int interval = 5,
+    int page = 1,
+    int pageSize = 50,
   }) async {
-    String rowData = await rootBundle
-        .loadString('assets/mock_data/symbol_ibm/${interval}_min.json');
+    TimeSeriesModel timeSeries = TimeSeriesModel.fromJson(
+      await rootBundle
+          .loadString('assets/mock_data/symbol_ibm/${interval}_min.json'),
+    );
 
-    return TimeSeriesModel.fromJson(rowData);
+    return TimeSeriesModel(
+      metaData: timeSeries.metaData,
+      candles: timeSeries.candles.sublist(
+        (page - 1) * pageSize,
+        page * pageSize,
+      ),
+    );
   }
 }

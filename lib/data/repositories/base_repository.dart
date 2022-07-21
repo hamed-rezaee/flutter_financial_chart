@@ -4,5 +4,7 @@ abstract class BaseRepository {
   Future<TimeSeriesModel> fetchTimeSeries({
     required String symbol,
     required int interval,
+    int page,
+    int pageSize,
   });
 }
