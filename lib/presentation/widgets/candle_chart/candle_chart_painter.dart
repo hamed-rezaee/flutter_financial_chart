@@ -19,8 +19,8 @@ class CandleChartPainter extends CustomPainter {
           ..color = Colors.green,
         _lossPaint = lossPaint ?? Paint()
           ..color = Colors.red,
-        _wickWidth = wickWidth ?? 1,
-        _candleWidth = candleWidth ?? 3;
+        _wickWidth = wickWidth ?? 2,
+        _candleWidth = candleWidth ?? 6;
 
   final List<CandleStickModel>? timeSeries;
   final Paint _wickPaint;

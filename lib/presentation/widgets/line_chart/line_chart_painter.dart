@@ -53,7 +53,7 @@ class LineChartPainter extends CustomPainter {
 
       bars.add(
         LineModel(
-          width: 3,
+          width: 6,
           height: currentElement.volume * pixelPerHigh,
           centerX: (i + 1) * pixelPerWidth,
           paint: isGain ? _gainPaint : _lossPaint,

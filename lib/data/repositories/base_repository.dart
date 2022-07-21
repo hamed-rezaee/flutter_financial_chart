@@ -7,4 +7,9 @@ abstract class BaseRepository {
     int page,
     int pageSize,
   });
+
+  Stream<TimeSeriesModel> subscribeTimeSeries({
+    required String symbol,
+    required int interval,
+  });
 }
