@@ -1,14 +1,14 @@
-import 'package:flutter_financial_chart/data/models/time_series_model.dart';
+import 'package:flutter_financial_chart/data/models/market_info_model.dart';
 
 abstract class BaseRepository {
-  Future<TimeSeriesModel> fetchTimeSeries({
+  Future<MarketInformationModel> fetchMarket({
     required String symbol,
     required int interval,
     int page,
     int pageSize,
   });
 
-  Stream<TimeSeriesModel> subscribeTimeSeries({
+  Stream<MarketInformationModel> subscribeMarket({
     required String symbol,
     required int interval,
   });

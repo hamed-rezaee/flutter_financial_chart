@@ -24,4 +24,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - "assets/mock_data/symbol_ibm/"
+    - assets/mock_data/1HZ300V/

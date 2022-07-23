@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_financial_chart/data/models/candlestick_model.dart';
+import 'package:flutter_financial_chart/data/models/candle_model.dart';
 import 'package:flutter_financial_chart/presentation/widgets/line_chart/line_model.dart';
 
 class LineChartPainter extends CustomPainter {
@@ -15,7 +15,7 @@ class LineChartPainter extends CustomPainter {
         _lossPaint = lossPaint ?? Paint()
           ..color = Colors.red.withOpacity(0.5);
 
-  final List<CandleStickModel>? timeSeries;
+  final List<CandleModel>? timeSeries;
   final Paint _gainPaint;
   final Paint _lossPaint;
 
@@ -48,7 +48,7 @@ class LineChartPainter extends CustomPainter {
     List<LineModel> bars = [];
 
     for (int i = 0; i < timeSeries!.length; i++) {
-      final CandleStickModel currentElement = timeSeries![i];
+      final CandleModel currentElement = timeSeries![i];
       final bool isGain = currentElement.open < currentElement.close;
 
       bars.add(

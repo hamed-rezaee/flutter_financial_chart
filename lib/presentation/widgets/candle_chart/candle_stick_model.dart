@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CandleModel {
-  CandleModel({
+class CandleStickModel {
+  CandleStickModel({
     required this.centerX,
     required this.wickHighY,
     required this.wickLowY,

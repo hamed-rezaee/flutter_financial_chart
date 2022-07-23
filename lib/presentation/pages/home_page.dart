@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_financial_chart/data/models/time_series_model.dart';
+
+import 'package:flutter_financial_chart/data/models/market_info_model.dart';
 import 'package:flutter_financial_chart/data/repositories/mock_repository.dart';
 import 'package:flutter_financial_chart/presentation/widgets/candle_chart/candle_chart_painter.dart';
-
 import 'package:flutter_financial_chart/presentation/widgets/line_chart/line_chart_painter.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,13 +20,12 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.black,
         appBar: AppBar(elevation: 0, title: Text(widget.title)),
         body: Padding(
-          padding: const EdgeInsets.all(32),
-          child: StreamBuilder<TimeSeriesModel>(
-            key: UniqueKey(),
-            stream: MockRepository().subscribeTimeSeries(),
+          padding: const EdgeInsets.all(8),
+          child: StreamBuilder<MarketInformationModel>(
+            stream: MockRepository().subscribeMarket(),
             builder: (
               BuildContext context,
-              AsyncSnapshot<TimeSeriesModel> snapshot,
+              AsyncSnapshot<MarketInformationModel> snapshot,
             ) {
               return Column(
                 children: <Widget>[
@@ -48,14 +47,14 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget _buildCandleChart(AsyncSnapshot<TimeSeriesModel> snapshot) =>
+  Widget _buildCandleChart(AsyncSnapshot<MarketInformationModel> snapshot) =>
       CustomPaint(
         size: Size.infinite,
         painter: CandleChartPainter(timeSeries: snapshot.data?.candles),
       );
 }
 
-CustomPaint _buildLineChart(AsyncSnapshot<TimeSeriesModel> snapshot) =>
+CustomPaint _buildLineChart(AsyncSnapshot<MarketInformationModel> snapshot) =>
     CustomPaint(
       size: Size.infinite,
       painter: LineChartPainter(timeSeries: snapshot.data?.candles),

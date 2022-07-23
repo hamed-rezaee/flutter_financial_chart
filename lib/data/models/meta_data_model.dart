@@ -3,20 +3,23 @@ import 'dart:convert';
 class MetaDataModel {
   MetaDataModel({
     required this.symbol,
-    required this.lastRefreshed,
-    required this.interval,
+    required this.symbolName,
+    required this.market,
+    required this.submarket,
   });
+
+  final String symbol;
+  final String symbolName;
+  final String market;
+  final String submarket;
+
+  factory MetaDataModel.fromJson(String string) =>
+      MetaDataModel.fromMap(json.decode(string));
 
   factory MetaDataModel.fromMap(Map<String, dynamic> json) => MetaDataModel(
         symbol: json["symbol"],
-        lastRefreshed: DateTime.parse(json["last_refreshed"]),
-        interval: json["interval"],
+        symbolName: json["symbol_name"],
+        market: json["market"],
+        submarket: json["submarket"],
       );
-
-  factory MetaDataModel.fromJson(String data) =>
-      MetaDataModel.fromMap(json.decode(data));
-
-  final String symbol;
-  final DateTime lastRefreshed;
-  final String interval;
 }
