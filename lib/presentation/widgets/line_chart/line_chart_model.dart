@@ -8,6 +8,6 @@ class LineChartModel {
   });
 
   final double value;
-  final double timestamp;
+  final int timestamp;
   final Paint paint;
 }
