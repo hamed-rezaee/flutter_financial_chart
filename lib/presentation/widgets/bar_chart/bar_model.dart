@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LineModel {
-  LineModel({
+class BarModel {
+  BarModel({
     required this.width,
     required this.height,
     required this.centerX,

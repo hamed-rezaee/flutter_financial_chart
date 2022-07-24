@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_financial_chart/data/models/market_info_model.dart';
 import 'package:flutter_financial_chart/data/repositories/mock_repository.dart';
+import 'package:flutter_financial_chart/presentation/widgets/bar_chart/bar_chart_painter.dart';
 import 'package:flutter_financial_chart/presentation/widgets/candle_chart/candle_chart_painter.dart';
 import 'package:flutter_financial_chart/presentation/widgets/duration_selector.dart';
-import 'package:flutter_financial_chart/presentation/widgets/line_chart/line_chart_painter.dart';
 import 'package:flutter_financial_chart/presentation/widgets/value_indicator.dart';
 
 class HomePage extends StatefulWidget {
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
   CustomPaint _buildLineChart(AsyncSnapshot<MarketInformationModel> snapshot) =>
       CustomPaint(
         size: Size.infinite,
-        painter: LineChartPainter(timeSeries: snapshot.data?.candles),
+        painter: BarChartPainter(timeSeries: snapshot.data?.candles),
       );
 
   double _getValue(MarketInformationModel? data) => data == null

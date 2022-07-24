@@ -3,10 +3,10 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_financial_chart/data/models/candle_model.dart';
-import 'package:flutter_financial_chart/presentation/widgets/line_chart/line_model.dart';
+import 'package:flutter_financial_chart/presentation/widgets/bar_chart/bar_model.dart';
 
-class LineChartPainter extends CustomPainter {
-  LineChartPainter({
+class BarChartPainter extends CustomPainter {
+  BarChartPainter({
     this.timeSeries,
     Paint? gainPaint,
     Paint? lossPaint,
@@ -25,9 +25,9 @@ class LineChartPainter extends CustomPainter {
       return;
     }
 
-    final List<LineModel> bars = _generateBars(size);
+    final List<BarModel> bars = _generateBars(size);
 
-    for (final LineModel bar in bars) {
+    for (final BarModel bar in bars) {
       canvas.drawRect(
         Rect.fromLTWH(
           bar.centerX - (bar.width / 2),
@@ -40,19 +40,19 @@ class LineChartPainter extends CustomPainter {
     }
   }
 
-  List<LineModel> _generateBars(Size size) {
+  List<BarModel> _generateBars(Size size) {
     final double pixelPerWidth = size.width / (timeSeries!.length + 1);
     final double pixelPerHigh =
         size.height / timeSeries!.map((item) => item.volume).reduce(math.max);
 
-    List<LineModel> bars = [];
+    List<BarModel> bars = [];
 
     for (int i = 0; i < timeSeries!.length; i++) {
       final CandleModel currentElement = timeSeries![i];
       final bool isGain = currentElement.open < currentElement.close;
 
       bars.add(
-        LineModel(
+        BarModel(
           width: 6,
           height: currentElement.volume * pixelPerHigh,
           centerX: (i + 1) * pixelPerWidth,
