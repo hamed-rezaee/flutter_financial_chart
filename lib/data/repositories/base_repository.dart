@@ -1,15 +1,20 @@
-import 'package:flutter_financial_chart/data/models/market_info_model.dart';
+import 'package:flutter_financial_chart/data/models/candle_information_model.dart';
+import 'package:flutter_financial_chart/data/models/tick_information_model.dart';
 
 abstract class BaseRepository {
-  Future<MarketInformationModel> fetchMarket({
-    required String symbol,
-    required int interval,
+  Future<CandleInformationModel> fetchMarket({
+    String symbol,
     int page,
     int pageSize,
   });
 
-  Stream<MarketInformationModel> subscribeMarket({
-    required String symbol,
-    required int interval,
+  Stream<CandleInformationModel> subscribeMarket({
+    String symbol,
+    int pageSize,
+  });
+
+  Stream<TickInformationModel> subscribeTick({
+    String symbol,
+    int pageSize,
   });
 }

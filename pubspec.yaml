@@ -24,4 +24,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/mock_data/1HZ300V/
+    - assets/mock_data/candle/
+    - assets/mock_data/tick/

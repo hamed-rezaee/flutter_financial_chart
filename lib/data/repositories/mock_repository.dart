@@ -1,23 +1,23 @@
 import 'package:flutter/services.dart';
 
 import 'package:flutter_financial_chart/data/models/candle_model.dart';
-import 'package:flutter_financial_chart/data/models/market_info_model.dart';
+import 'package:flutter_financial_chart/data/models/candle_information_model.dart';
+import 'package:flutter_financial_chart/data/models/history_model.dart';
+import 'package:flutter_financial_chart/data/models/tick_information_model.dart';
 import 'package:flutter_financial_chart/data/repositories/base_repository.dart';
 
 class MockRepository implements BaseRepository {
   @override
-  Future<MarketInformationModel> fetchMarket({
-    String symbol = '1HZ300V',
-    int interval = 5,
+  Future<CandleInformationModel> fetchMarket({
+    String symbol = '1hz300v',
     int page = 0,
     int pageSize = 50,
   }) async {
-    MarketInformationModel marketInformation = MarketInformationModel.fromJson(
-      await rootBundle
-          .loadString('assets/mock_data/$symbol/${interval}_min.json'),
+    CandleInformationModel marketInformation = CandleInformationModel.fromJson(
+      await rootBundle.loadString('assets/mock_data/candle/$symbol.json'),
     );
 
-    return MarketInformationModel(
+    return CandleInformationModel(
       metaData: marketInformation.metaData,
       candles: marketInformation.candles.sublist(
         marketInformation.candles.length - (page + 1) * pageSize,
@@ -27,14 +27,12 @@ class MockRepository implements BaseRepository {
   }
 
   @override
-  Stream<MarketInformationModel> subscribeMarket({
-    String symbol = '1HZ300V',
-    int interval = 5,
+  Stream<CandleInformationModel> subscribeMarket({
+    String symbol = '1hz300v',
     int pageSize = 50,
   }) async* {
-    MarketInformationModel marketInformation = MarketInformationModel.fromJson(
-      await rootBundle
-          .loadString('assets/mock_data/$symbol/${interval}_min.json'),
+    CandleInformationModel marketInformation = CandleInformationModel.fromJson(
+      await rootBundle.loadString('assets/mock_data/candle/$symbol.json'),
     );
 
     List<CandleModel> candle = marketInformation.candles.sublist(0, pageSize);
@@ -42,11 +40,39 @@ class MockRepository implements BaseRepository {
     for (int i = pageSize; i < marketInformation.candles.length; i++) {
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      yield MarketInformationModel(
+      yield CandleInformationModel(
         metaData: marketInformation.metaData,
         candles: candle
           ..removeAt(0)
           ..insert(pageSize - 1, marketInformation.candles[i + pageSize - 1]),
+      );
+    }
+  }
+
+  @override
+  Stream<TickInformationModel> subscribeTick({
+    String symbol = '1hz300v',
+    int pageSize = 50,
+  }) async* {
+    TickInformationModel marketInformation = TickInformationModel.fromJson(
+      await rootBundle.loadString('assets/mock_data/tick/$symbol.json'),
+    );
+
+    List<double> prices = marketInformation.history.prices.sublist(0, pageSize);
+
+    for (int i = pageSize; i < marketInformation.history.prices.length; i++) {
+      await Future<void>.delayed(const Duration(seconds: 1));
+
+      yield TickInformationModel(
+        metaData: marketInformation.metaData,
+        history: HistoryModel(
+          prices: prices
+            ..removeAt(0)
+            ..insert(pageSize - 1, prices[i + pageSize - 1]),
+          times: marketInformation.history.times
+            ..remove(0)
+            ..insert(0, i + pageSize - 1),
+        ),
       );
     }
   }

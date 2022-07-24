@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BarModel {
-  BarModel({
+class BarChartModel {
+  BarChartModel({
     required this.width,
     required this.height,
     required this.centerX,

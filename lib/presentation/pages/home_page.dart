@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_financial_chart/data/models/market_info_model.dart';
+import 'package:flutter_financial_chart/data/models/candle_information_model.dart';
+import 'package:flutter_financial_chart/data/models/tick_information_model.dart';
 import 'package:flutter_financial_chart/data/repositories/mock_repository.dart';
 import 'package:flutter_financial_chart/presentation/widgets/bar_chart/bar_chart_painter.dart';
 import 'package:flutter_financial_chart/presentation/widgets/candle_chart/candle_chart_painter.dart';
 import 'package:flutter_financial_chart/presentation/widgets/duration_selector.dart';
+import 'package:flutter_financial_chart/presentation/widgets/line_chart/line_chart_painter.dart';
 import 'package:flutter_financial_chart/presentation/widgets/value_indicator.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,12 +27,11 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(elevation: 0, title: Text(widget.title)),
         body: Padding(
           padding: const EdgeInsets.all(8),
-          child: StreamBuilder<MarketInformationModel>(
-            stream:
-                MockRepository().subscribeMarket(interval: _selectedDuration),
+          child: StreamBuilder<CandleInformationModel>(
+            stream: MockRepository().subscribeMarket(),
             builder: (
               BuildContext context,
-              AsyncSnapshot<MarketInformationModel> snapshot,
+              AsyncSnapshot<CandleInformationModel> snapshot,
             ) =>
                 Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,8 +72,14 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(height: 4),
                           SizedBox(
                             width: double.infinity,
+                            height: 192,
+                            child: _buildLineChart(),
+                          ),
+                          const SizedBox(height: 4),
+                          SizedBox(
+                            width: double.infinity,
                             height: 32,
-                            child: _buildLineChart(snapshot),
+                            child: _buildBarChart(snapshot),
                           ),
                         ],
                       ),
@@ -91,19 +98,29 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget _buildCandleChart(AsyncSnapshot<MarketInformationModel> snapshot) =>
+  Widget _buildCandleChart(AsyncSnapshot<CandleInformationModel> snapshot) =>
       CustomPaint(
         size: Size.infinite,
         painter: CandleChartPainter(timeSeries: snapshot.data?.candles),
       );
 
-  CustomPaint _buildLineChart(AsyncSnapshot<MarketInformationModel> snapshot) =>
+  Widget _buildLineChart() => StreamBuilder<TickInformationModel>(
+        stream: MockRepository().subscribeTick(),
+        builder: (context, snapshot) => CustomPaint(
+          size: Size.infinite,
+          painter: LineChartPainter(
+            values: snapshot.data?.history.prices,
+          ),
+        ),
+      );
+
+  CustomPaint _buildBarChart(AsyncSnapshot<CandleInformationModel> snapshot) =>
       CustomPaint(
         size: Size.infinite,
         painter: BarChartPainter(timeSeries: snapshot.data?.candles),
       );
 
-  double _getValue(MarketInformationModel? data) => data == null
+  double _getValue(CandleInformationModel? data) => data == null
       ? 0
       : (data.candles.last.close + data.candles.last.close) / 2;
 }
