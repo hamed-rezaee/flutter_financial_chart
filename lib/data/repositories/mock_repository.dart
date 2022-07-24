@@ -71,7 +71,10 @@ class MockRepository implements BaseRepository {
             ..insert(pageSize - 1, prices[i + pageSize - 1]),
           times: marketInformation.history.times
             ..remove(0)
-            ..insert(0, i + pageSize - 1),
+            ..insert(
+              pageSize - 1,
+              marketInformation.history.times[i + pageSize - 1],
+            ),
         ),
       );
     }
